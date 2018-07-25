@@ -1,0 +1,63 @@
+version: "3.5"
+
+services:
+  mysql:
+    build: ./mysql
+    image: "mysql:25072018"
+    container_name: mysql
+    restart: always
+    ports:
+      - 3306:3306/tcp
+    volumes:
+      - mysql-data:/var/lib/mysql
+    environment:
+      - MYSQL_USER=username
+      - MYSQL_PASS=myPassword
+      - DB_NAME=dbname
+    networks:
+      - private
+
+  php7-fpm:
+    build: ./php7-fpm
+    image: "php7-fpm:25072018"
+    container_name: php7-fpm
+    restart: always
+    ports:
+      - 9000:9000/tcp
+    volumes:
+      - data:/data
+    links:
+      - mysql
+    networks:
+      - private
+
+  nginx:
+    build: ./nginx
+    image: "nginx:25072018"
+    container_name: nginx
+    restart: always
+    ports:
+      - 80:80/tcp
+      - 443:443/tcp
+    volumes:
+      - data:/data
+    environment:
+      - FQDN=example.com
+      - SUPPORT_SSL=no
+    links:
+      - mysql
+      - php7-fpm
+    networks:
+      - public
+      - private
+
+networks:
+  public:
+    driver: bridge
+  private:
+    driver: bridge
+    internal: true
+
+volumes:
+  data:
+  mysql-data:
