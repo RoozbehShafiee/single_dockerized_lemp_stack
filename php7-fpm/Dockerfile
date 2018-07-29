@@ -13,7 +13,6 @@ ENV HOME=/root \
     DATA_DIR=/data \
     TIMEZONE=Europe/Berlin
 
-
 ## manage packages and repositories
 RUN apt-get update \
     && apt-get -y dist-upgrade \
