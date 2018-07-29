@@ -29,7 +29,9 @@ ADD ./conf_files/443-default /etc/nginx/sites-available/443-default
 ADD ./conf_files/nginx.conf /etc/nginx/nginx.conf
 ADD ./conf_files/sysctl.conf /etc/sysctl.d/00-ubuntu_nginx.conf
 ADD ./conf_files/ssl /etc/nginx/ssl
-RUN chmod +x /entrypoint.sh
+RUN rm /etc/nginx/sites-available/default \
+    && rm /etc/nginx/sites-enabled/default \
+    && chmod +x /entrypoint.sh
 
 ## forward request and error logs to docker log collector
 RUN ln -sf /dev/stdout /var/log/nginx/access.log \
