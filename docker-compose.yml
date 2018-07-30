@@ -6,30 +6,30 @@ services:
     image: "mysql:25072018"
     container_name: mysql
     restart: always
-    ports:
-      - 3306:3306/tcp
+    expose:
+      - 3306
     volumes:
-      - mysql-data:/var/lib/mysql
+      - mysql_data:/var/lib/mysql
     environment:
       - MYSQL_USER=username
       - MYSQL_PASS=myPassword
       - DB_NAME=dbname
     networks:
-      - private
+      - lemp
 
   php7-fpm:
     build: ./php7-fpm
     image: "php7-fpm:25072018"
     container_name: php7-fpm
     restart: always
-    ports:
-      - 9000:9000/tcp
+    expose:
+      - 9000
     volumes:
       - data:/data
     links:
       - mysql
     networks:
-      - private
+      - lemp
 
   nginx:
     build: ./nginx
@@ -37,8 +37,8 @@ services:
     container_name: nginx
     restart: always
     ports:
-      - 80:80/tcp
-      - 443:443/tcp
+      - 80:80
+      - 443:443
     volumes:
       - data:/data
     environment:
@@ -48,16 +48,12 @@ services:
       - mysql
       - php7-fpm
     networks:
-      - public
-      - private
+      - lemp
 
 networks:
-  public:
+  lemp:
     driver: bridge
-  private:
-    driver: bridge
-    internal: true
 
 volumes:
   data:
-  mysql-data:
+  mysql_data:
