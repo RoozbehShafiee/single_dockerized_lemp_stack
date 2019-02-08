@@ -8,11 +8,12 @@ LABEL image="Single Dockerized LEMP Stack - MariaDB 10.2 Docker Image" \
       reference="https://roozbeh.cloud, https://github.com/RoozbehShafiee"
 
 ## install MariaDB and necessary packages
-RUN apk add --no-cache \
-        mariadb \
-        mariadb-client \
-        pwgen \
-        && rm -f /var/cache/apk/*
+RUN apk update \
+    && apk add --no-cache \
+           mariadb \
+           mariadb-client \
+           pwgen \
+    && rm -f /var/cache/apk/*
 
 ## manage entrypoint file and directories
 ADD entrypoint.sh /scripts/entrypoint.sh
