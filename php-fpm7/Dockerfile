@@ -13,11 +13,11 @@ ENV DATA_DIR=/data \
 
 ## manage packages and repositories
 RUN apk update \
-    && apk add
+    && apk add \
            php7-fpm \
            php7-xml \
            php7-mysqli \
-           php7-mysqlnd
+           php7-mysqlnd \
     && rm -f /var/cache/apk/*
 
 ## edit configuration files

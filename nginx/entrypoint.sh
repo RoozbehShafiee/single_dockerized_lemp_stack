@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/ash
 
 set -m
 set -e
@@ -6,7 +6,7 @@ set -e
 FQDN=${FQDN:-}
 
 support_ssl() {
-      sed -i "s|FQDN|${FQDN}|g" /etc/nginx/conf.d/default
+      sed -i "s|FQDN|${FQDN}|g" /etc/nginx/conf.d/default.conf
       chmod 600 /etc/nginx/ssl/*
 }
 
