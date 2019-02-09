@@ -4,11 +4,11 @@ Project Details
 ----
 This set of dockerfiles and compose run and deploy an LEMP stack on a single node environment including:
 
- * Nginx (Stable branch)
+ * Nginx (1.14)
  * PHP7-FPM (7.2)
- * MySQL 8 (8.0)
+ * MariaDB (10.2)
 
- and all based on Ubuntu:18.04 as the base image.
+ and all based on Alpine Linux 3.8 as the base image.
 
 Up n Launch
 ----
@@ -23,24 +23,22 @@ To run and launch the LEMP stack, first install `docker-compose` and `git` on th
 Environment Variables
 ----
 
-To create `Username`, `Password` and `Database` during the launch, use these environment variables for `mysql` service in `docker-compose.yml`:
+Before running the stack, change default environment variables for `mariadb` service in `docker-compose.yml`:
 
 ```yaml
 environment:
+  - MYSQL_DATABASE=dbname
   - MYSQL_USER=username
-  - MYSQL_PASS=myPassword
-  - DB_NAME=dbname
+  - MYSQL_PASSWORD=myPassword
+  - MYSQL_ROOT_PASSWORD=rootPassword
 ```
 
-also to define `FQDN` and `Supporting SSL` for `nginx` service:
+also define a `DOMAIN_NAME` binded to a valid IP address and `EMAIL_ADDRESS` for `nginx` service for running Let's Encrypt Certbot successfully.
 
 ```yaml
 environment:
-  - FQDN=example.com
-  - SUPPORT_SSL=no
+  - DOMAIN_NAME=example.com
+  - EMAIL_ADDRESS=my@email.com
 ```
 
-IMPORTANT: If you want to use SSL support, don't forget to place ssl keys into ./nginx/conf_files/ssl with this naming:
-
-- certificate.pem
-- private.key
+IMPORTANT: Stack uses Let's Encrypt to make `HTTPS` connections by default, so DO run the stack with a valid domain name binded to a valid IP address. (It doesn't run on localhost)
