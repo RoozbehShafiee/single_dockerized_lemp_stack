@@ -19,7 +19,7 @@ RUN apk add --update --no-cache \
         php7-mysqlnd \
     && rm -f /var/cache/apk/*
 
-## edit configuration files
+## managing files, directories and configuration file
 RUN mkdir /run/php \
     && sed -ie "s|;date.timezone =|date.timezone = ${TIMEZONE}|g" /etc/php7/php.ini \
     && sed -ie "s|listen = 127.0.0.1:9000|listen = 0.0.0.0:9000|g" /etc/php7/php-fpm.d/www.conf
