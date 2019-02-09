@@ -17,11 +17,11 @@ RUN apk add --update --no-cache \
         bash \
         openssl \
         certbot \
-        python \
-        py-pip \
-    && pip install --upgrade pip \
-    && pip install 'certbot-nginx' \
-    && pip install 'pyopenssl' \
+        python3 \
+        py3-pip \
+    && pip3 install --upgrade pip \
+    && pip3 install 'certbot-nginx' \
+    && pip3 install 'pyopenssl' \
     && rm -f /var/cache/apk/*
 
 ## managing files, directories and configuration file
