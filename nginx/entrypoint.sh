@@ -6,7 +6,7 @@ set -e
 DOMAIN_NAME=${DOMAIN_NAME:-}
 EMAIL_ADDRESS=${EMAIL_ADDRESS:-}
 
-nginx -g 'daemon off;'
+nginx -g "daemon on;"
 
 if [[ -d "/etc/letsencrypt/live/${DOMAIN_NAME}" ]]; then
         certbot renew --quiet
