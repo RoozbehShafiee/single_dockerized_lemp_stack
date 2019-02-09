@@ -11,14 +11,22 @@ LABEL image="Single Dockerized LEMP Stack - Nginx Docker Image" \
 ENV DATA_DIR=/data
 
 ## install nginx and package clean up
-RUN apk update \
-    && apk add --no-cache \
-           nginx \
+RUN apk add --update --no-cache \
+        nginx \
+        curl \
+        bash \
+        openssl \
+        certbot \
+        python \
+        py-pip \
+    && pip install --upgrade pip \
+    && pip install 'certbot-nginx' \
+    && pip install 'pyopenssl' \
     && rm -f /var/cache/apk/*
 
 ## add and apply extra configuration files.
 ADD entrypoint.sh /entrypoint.sh
-ADD default.conf /etc/nginx/conf.d/default.conf
+ADD default /etc/nginx/conf.d/default
 ADD nginx.conf /etc/nginx/nginx.conf
 ADD sysctl.conf /etc/sysctl.d/nginx.conf
 RUN chmod +x /entrypoint.sh \

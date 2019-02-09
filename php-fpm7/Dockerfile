@@ -12,12 +12,11 @@ ENV DATA_DIR=/data \
     TIMEZONE=Europe/Berlin
 
 ## manage packages and repositories
-RUN apk update \
-    && apk add \
-           php7-fpm \
-           php7-xml \
-           php7-mysqli \
-           php7-mysqlnd \
+RUN apk add --update --no-cache \
+        php7-fpm \
+        php7-xml \
+        php7-mysqli \
+        php7-mysqlnd \
     && rm -f /var/cache/apk/*
 
 ## edit configuration files

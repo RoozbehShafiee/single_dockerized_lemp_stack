@@ -1,10 +1,13 @@
 server {
         listen 80;
-        server_name FQDN;
+        server_name DOMAIN_NAME;
         return 301 https://$host$request_uri;
 }
 
 server {
+        ssl_dhparam /etc/ssl/certs/dhparam.pem;
+        server_name DOMAIN_NAME www.DOMAIN_NAME;
+
         listen 443 ssl;
         ssl on;
         root /data;
@@ -13,11 +16,9 @@ server {
         access_log /var/log/nginx/access.log;
         error_log  /var/log/nginx/error.log  warn;
 
-        # Make site accessible from http://localhost/
-        server_name FQDN;
-
-        ssl_certificate /etc/nginx/ssl/certificate.crt;
-        ssl_certificate_key /etc/nginx/ssl/private.key;
+        ssl_certificate /etc/letsencrypt/live/DOMAIN_NAME/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/DOMAIN_NAME/privkey.pem;
+        # include /etc/letsencrypt/options-ssl-nginx.conf;
         ssl_session_timeout 5m;
 
         ssl_protocols SSLv3 TLSv1 TLSv1.1 TLSv1.2;
@@ -37,5 +38,28 @@ server {
                 fastcgi_index index.php;
                 fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
                 include fastcgi_params;
+        }
+}
+
+server {
+        listen 80;
+        server_name DOMAIN_NAME www.DOMAIN_NAME;
+
+        # listen for ACME challenge from Certbot
+        location ^~ /.well-known/acme-challenge/ {
+                # No HTTP authentication
+                allow all;
+
+                default_type "text/plain";
+        }
+
+        location = /.well-known/acme-challenge/ {
+                return 404;
+        }
+
+        # Redirect other HTTP traffic to HTTPS
+        location / {
+                access_log off;
+                return 301 https://$host$request_uri;
         }
 }
