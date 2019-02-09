@@ -1,26 +1,27 @@
-version: "3.5"
+version: "3"
 
 services:
   mysql:
-    build: ./mysql
-    image: "mysql:25072018"
-    container_name: mysql
+    build: ./mariadb
+    image: "mariadb:20190208"
+    container_name: mariadb
     restart: always
     expose:
       - 3306
     volumes:
       - mysql_data:/var/lib/mysql
     environment:
+      - MYSQL_DATABASE=dbname
       - MYSQL_USER=username
-      - MYSQL_PASS=myPassword
-      - DB_NAME=dbname
+      - MYSQL_PASSWORD=myPassword
+      - MYSQL_ROOT_PASSWORD=rootPassword
     networks:
       - lemp
 
-  php7-fpm:
-    build: ./php7-fpm
-    image: "php7-fpm:25072018"
-    container_name: php7-fpm
+  php-fpm7:
+    build: ./php-fpm7
+    image: "php-fpm7:20190208"
+    container_name: php-fpm7
     restart: always
     expose:
       - 9000
@@ -33,7 +34,7 @@ services:
 
   nginx:
     build: ./nginx
-    image: "nginx:25072018"
+    image: "nginx:20190208"
     container_name: nginx
     restart: always
     ports:
@@ -42,11 +43,11 @@ services:
     volumes:
       - data:/data
     environment:
-      - FQDN=example.com
-      - SUPPORT_SSL=no
+      - DOMAIN_NAME=example.com
+      - EMAIL_ADDRESS=my@email.com
     links:
       - mysql
-      - php7-fpm
+      - php-fpm7
     networks:
       - lemp
 
