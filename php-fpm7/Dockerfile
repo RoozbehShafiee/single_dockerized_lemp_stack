@@ -1,4 +1,4 @@
-FROM alpine:3.8
+FROM alpine:3.9
 
 ## label and credits
 LABEL image="Single Dockerized LEMP Stack - PHP-FPM Docker Image" \
