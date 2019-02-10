@@ -16,7 +16,9 @@ RUN apk add --update --no-cache \
 
 ## managing files, directories and configuration file
 ADD entrypoint.sh /scripts/entrypoint.sh
-RUN mkdir /docker-entrypoint-initdb.d \
+ADD my.cnf /etc/my.cnf
+RUN mkdir -p /etc/mysql/conf.d/ \
+    && mkdir /docker-entrypoint-initdb.d \
     && mkdir /scripts/pre-exec.d \
     && mkdir /scripts/pre-init.d \
     && chmod -R 755 /scripts
