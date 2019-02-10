@@ -6,7 +6,7 @@ This set of dockerfiles and compose run and deploy an LEMP stack on a single nod
 
  * Nginx (1.14)
  * PHP7-FPM (7.2)
- * MariaDB (10.2)
+ * MariaDB (10.3)
 
  and all based on Alpine Linux 3.8 as the base image.
 
