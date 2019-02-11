@@ -17,6 +17,9 @@ RUN apk add --update --no-cache \
         php7-xml \
         php7-mysqli \
         php7-mysqlnd \
+        php7-gd \
+        php7-zlib \
+        php7-curl \
     && rm -f /var/cache/apk/*
 
 ## managing files, directories and configuration file
