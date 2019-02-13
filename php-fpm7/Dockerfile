@@ -45,14 +45,15 @@ RUN apk add --update --no-cache \
         php7-xmlreader \
     && rm -f /var/cache/apk/*
 
-## managing files, directories and configuration file
+## managing users, groups, files, directories and configuration files
 RUN mkdir /run/php \
     && mkdir -p /var/log/php-fpm7 \
     && sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php7/php.ini \
     && sed -i 's/expose_php = On/expose_php = Off/g' /etc/php7/php.ini \
     && sed -i "s|;date.timezone =|date.timezone = ${TIMEZONE}|g" /etc/php7/php.ini \
-    && sed -i "s|listen = 127.0.0.1:9000|listen = 0.0.0.0:9000|g" /etc/php7/php-fpm.d/www.conf
-ADD custom.conf /etc/php7/php-fpm.d/custom.conf
+    && addgroup -g 82 -S nginx \
+	  && adduser -u 82 -D -S -G nginx nginx
+ADD www.conf /etc/php7/php-fpm.d/www.conf
 
 ## data sorage
 VOLUME ["${DATA_DIR}"]
